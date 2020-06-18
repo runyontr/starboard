@@ -104,6 +104,13 @@ vulnerabilities                   vulns,vuln   aquasecurity.github.io         tr
 
 > There's also a `starboard cleanup` subcommand, which can be used to remove all resources created by Starboard.
 
+To allow starboard to run in an Openshift environment, the serviceaccount `default` in the `starboard` namespace must be allowed to use the `hostaccess` Security Context Constraints:
+
+```bash
+oc create role hostpid --verb=use --resource=scc --resource-name=hostaccess -n starboard
+oc create rolebinding hostpid --role=hostpid --serviceaccount=starboard:default
+```
+
 As an example let's run an old version of `nginx` that we know has vulnerabilities. Create an `nginx` Deployment in the
 `dev` namespace:
 
